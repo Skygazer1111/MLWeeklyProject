@@ -2,7 +2,7 @@
   {
     "number": 1,
     "title": "Introduction",
-    "summary": "Read a small CSV, understand its two columns, and draw simple graphs.",
+    "summary": "Read real traffic data, understand vehicle count and temperature, and draw simple graphs.",
     "practices": [
       "Devise a program to import, load and view dataset.",
       "Create a program to display the summary and statistics of the dataset."
@@ -12,7 +12,7 @@
   {
     "number": 2,
     "title": "Linear models",
-    "summary": "Use eruption duration to predict the next waiting time, then classify a short or long wait.",
+    "summary": "Use current traffic volume to predict the next hour, then classify light or heavy traffic.",
     "practices": [
       "Implement linear regression to perform prediction.",
       "Implement Bayesian logistic regression and SVM for classification."
@@ -22,7 +22,7 @@
   {
     "number": 3,
     "title": "Clustering & PCA",
-    "summary": "Find two groups of eruptions and reduce two measurements to one new feature.",
+    "summary": "Group similar traffic hours and reduce vehicle count and temperature to one new feature.",
     "practices": [
       "Implement K-means clustering, mixtures of Gaussians and Hierarchical clustering algorithm to categorize data.",
       "Create a program to perform PCA."
@@ -32,7 +32,7 @@
   {
     "number": 4,
     "title": "Hidden Markov models",
-    "summary": "Use a small two-state HMM to predict the next short or long waiting interval.",
+    "summary": "Use a two-state HMM to predict whether the next observed traffic hour is busy.",
     "practices": [
       "Implement HMM to predict the sequential data."
     ],

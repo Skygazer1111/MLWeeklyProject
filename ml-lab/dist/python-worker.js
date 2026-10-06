@@ -7,10 +7,10 @@ async function initialize() {
   python = await loadPyodide({indexURL: 'https://cdn.jsdelivr.net/pyodide/v314.0.7/full/'});
   status('Loading scientific packages…');
   await python.loadPackage(['numpy', 'pandas', 'scipy', 'matplotlib', 'scikit-learn', 'ipython']);
-  const response = await fetch('/data/geyser.csv');
+  const response = await fetch('/data/traffic.csv');
   if (!response.ok) throw new Error('The dataset could not be loaded. Please reload and try again.');
   python.FS.mkdirTree('/data');
-  python.FS.writeFile('/data/geyser.csv', await response.text());
+  python.FS.writeFile('/data/traffic.csv', await response.text());
   await python.runPythonAsync(`
 import os, io, json, ast, base64, traceback, contextlib
 os.chdir('/')

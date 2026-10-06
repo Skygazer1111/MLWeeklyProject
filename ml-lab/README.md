@@ -18,28 +18,29 @@ Commit and push the deployment configuration before deploying. In Vercel's **Set
 
 Deploy the new commit. Redeploying the old commit will not include the fix. The five unit pages, CSV files, notebooks and ZIP are all in the static output directory. No Python entrypoint is required. When regenerating notebooks, run both scripts below and commit the updated `dist` files before deploying again.
 
-## Our dataset: Old Faithful geyser
+## Our dataset: real highway traffic
 
-A geyser is a hot spring that sometimes shoots water into the air. This small real dataset records **299 eruptions** in their original observation order. It has only two numeric columns, both in minutes:
+The [UCI Metro Interstate Traffic Volume dataset](https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume) records hourly vehicle counts at a westbound I-94 road sensor between Minneapolis and Saint Paul, USA. The original source contains 48,204 rows, including weather and holiday features from 2012–2018. Citation: Hogue, J. (2019), DOI: 10.24432/C5X60B. License: CC BY 4.0.
 
-- `duration`: how long an eruption lasted.
-- `waiting`: how long people waited **before that eruption**.
+The teaching version has **1,008 continuous hourly observations (42 days)**: 13 April 2017 at 10:00 through 25 May 2017 at 09:00, in source local timestamps. Its columns are:
 
-There are no missing values. The only preparation is removing the mirror CSV's row-number column. The original measurements are retained in `data/geyser_original.csv`; the easy-to-read version is `data/geyser.csv`.
+- `date_time`: the recorded hour.
+- `traffic_volume`: vehicles counted during that hour.
+- `temperature_c`: air temperature in degrees Celsius.
 
-Source: [R MASS geyser documentation](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/geyser.html). CSV mirror: [Rdatasets MASS/geyser](https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/MASS/geyser.csv). Reference: Azzalini, A. and Bowman, A. W. (1990), *A look at some data on the Old Faithful geyser*, Applied Statistics 39, 357-365. Measurements were collected August 1-15, 1985. Some night-time durations were coded as 2, 3 or 4 minutes from descriptions rather than exact timing. This is a stated limitation of the source.
+Multiple weather entries can refer to the same hour. We verify that their vehicle counts agree, keep the first entry per timestamp, and sort by time. We select the first six weeks of the longest uninterrupted hourly run before modelling. Temperature is converted from Kelvin by subtracting 273.15. We do not fill missing hours or invent measurements. The complete original compressed CSV is `data/traffic_original.csv.gz`; the small classroom CSV is `data/traffic.csv`. `data/metadata.json` records provenance, selection, units, and the original file hash.
 
-To predict the wait **after** an eruption, the notebooks create `next_wait` using `waiting.shift(-1)`: the next row's waiting time follows the current eruption. This leaves 298 complete pairs. Units 2, 4 and 5 use the first 238 pairs for training and the final 60 pairs for testing. They preserve the recorded order. A wait of at least 70 minutes is called a long wait for this classroom experiment; this cutoff is chosen before testing.
+**Faculty explanation:** “I use real highway sensor readings to study traffic patterns and predict the next hour's vehicle count.” High vehicle count means a busy hour; without speed or capacity it does not establish congestion. This is one sensor and one short window, so the scores do not establish performance across roads or seasons.
 
 ## What each notebook teaches
 
-1. **Introduction:** read a CSV, show rows, use `describe()`, draw a histogram and a scatter plot.
-2. **Linear models:** predict next waiting time with linear regression; classify a long wait using Bayesian logistic regression and a linear SVM. The Bayesian example tries an intercept/slope grid, combines a Gaussian prior with the training likelihood, and averages predictions using posterior weights. It is approximate Bayesian inference; it is not ordinary logistic regression renamed as Bayesian.
-3. **Clustering and PCA:** K-means, Gaussian mixtures and hierarchical clustering find two groups; PCA compresses two standardized features into one. This is exploratory analysis of all complete pairs.
-4. **HMM:** a two-state supervised HMM learns transition and emission tables from short/long eruption labels in training data. Test predictions use forward filtering over previous waiting observations, without revealing test eruption states. It predicts before incorporating the current test observation. Add-one smoothing avoids zero probabilities. This simple version does not use unsupervised Baum-Welch training, backward recursion or Viterbi; the assignment's required HMM prediction experiment is present.
-5. **Combining models:** a depth-two CART tree, a 20-tree random forest and 20-estimator AdaBoost classify the same target. Compare actual test scores; more models need not give better accuracy.
+1. **Introduction:** read the CSV, inspect rows and missing values, summarize vehicle count and temperature, draw a histogram and scatter plot.
+2. **Linear models:** predict the following hour's vehicle count with linear regression; classify the next hour as light/heavy using Bayesian logistic regression and linear SVM. `next_volume = traffic_volume.shift(-1)` creates 1,007 complete pairs. The first 805 pairs train the models and the final 202 test them. Heavy means at least 4,000 vehicles/hour, a preselected classroom cutoff. Only current vehicle count is the input. The Bayesian model uses an intercept/slope grid, Gaussian prior, training likelihood, and posterior predictive averaging.
+3. **Clustering and PCA:** K-means, Gaussian mixtures, and Ward agglomerative clustering explore two groups using the same hour's vehicle count and temperature. Standardize both features; inspect cluster means before naming groups. PCA compresses those two features to one. The saved run retains **60.31% of standardized variance**, not 60.31% accuracy. Keeping two components retains all variance but does not reduce dimension.
+4. **HMM:** a supervised two-state teaching HMM uses daytime/night-time regime labels from training timestamps (daytime: 06:00–19:59) and light/heavy traffic observations. The first 806 hours train the probability tables and the final 202 are tested. During test filtering, clock-based state labels are withheld and predictions use only previously observed traffic categories. Predictions are recorded before revealing the current category. Add-one smoothing avoids zero probabilities. A practical model would use its available clock; this example illustrates HMM filtering without Baum-Welch or Viterbi. It includes a previous-hour-category baseline, which scores better than the HMM in the saved run.
+5. **Combining models:** a depth-two CART tree, 20-tree random forest, and 20-estimator AdaBoost classify the same next-hour target and use the same chronological split as Unit 2.
 
-Each notebook contains short explanations, code comments, real outputs, graphs, a small change to try, and viva questions. Read and run each cell, then explain its input, model and output in your own words.
+Each notebook has commented code, real executed outputs, graphs, changes to try, and viva questions. Run cells in order and explain the input, algorithm, and output.
 
 ## Open the notebooks in Jupyter
 
@@ -52,6 +53,6 @@ Keep the `data` folder beside `notebooks`. The simple loading cell supports runn
 
 ## Rebuild and verify
 
-`python scripts/build_notebooks.py` recreates the CSV and five notebooks from the supplied original geyser CSV. It does not need internet. `python scripts/execute_notebooks.py` executes all five and creates `dist/ml-weekly-notebooks.zip`. `node scripts/test-browser.mjs` verifies fresh Python execution in all five website pages, graphs, editing, error recovery, stopping, downloads and mobile layout. The local Python package versions are in `environment-tested.txt`; the browser uses Pyodide 314.0.7 and can have small numerical differences.
+`python scripts/build_notebooks.py` recreates the CSV and five notebooks from the supplied original traffic CSV. It does not need internet. `python scripts/execute_notebooks.py` executes all five and creates `dist/ml-weekly-notebooks.zip`. `node scripts/test-browser.mjs` verifies fresh Python execution in all five website pages, graphs, editing, error recovery, stopping, downloads and mobile layout. The local Python package versions are in `environment-tested.txt`; the browser uses Pyodide 314.0.7 and can have small numerical differences.
 
 The website contains the beginner notebooks. The previous pollution version is preserved only in an ignored local backup under `.sites-runtime`, outside the website and download pack.

@@ -22,6 +22,6 @@ for path in sorted((root / 'notebooks').glob('*.ipynb')):
     print(json.dumps(row), flush=True)
 with zipfile.ZipFile(root / 'dist' / 'ml-weekly-notebooks.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
     for path in (root / 'notebooks').glob('*.ipynb'): archive.write(path, 'notebooks/' + path.name)
-    for name in ['geyser.csv', 'geyser_original.csv', 'metadata.json']: archive.write(root / 'data' / name, 'data/' + name)
-    for name in ['README.md', 'requirements.txt', 'environment-tested.txt', 'scripts/build_notebooks.py', 'scripts/execute_notebooks.py']: archive.write(root / name, name)
+    for name in ['traffic.csv', 'traffic_original.csv.gz', 'metadata.json']: archive.write(root / 'data' / name, 'data/' + name)
+    for name in ['README.md', 'requirements.txt', 'environment-tested.txt', 'scripts/build_notebooks.py', 'scripts/execute_notebooks.py', 'scripts/prepare_traffic.py']: archive.write(root / name, name)
 (root / 'verification.json').write_text(json.dumps(report, indent=2))

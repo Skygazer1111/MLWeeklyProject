@@ -1,15 +1,20 @@
 {
-  "name": "Old Faithful geyser (MASS version)",
-  "rows": 299,
+  "name": "Metro Interstate Traffic Volume \u2014 six-week teaching window",
+  "original_rows": 48204,
+  "unique_hours": 40575,
+  "rows": 1008,
+  "start": "2017-04-13 10:00:00",
+  "end": "2017-05-25 09:00:00",
   "columns": {
-    "duration": "Eruption duration in minutes",
-    "waiting": "Waiting time BEFORE this eruption, in minutes"
+    "date_time": "Source local CST timestamp",
+    "traffic_volume": "Vehicles counted during this hour",
+    "temperature_c": "Air temperature in degrees Celsius"
   },
-  "collection": "Continuous observations, August 1-15, 1985",
-  "source": "https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/geyser.html",
-  "csv_source": "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/MASS/geyser.csv",
-  "citation": "Azzalini, A. and Bowman, A. W. (1990). A look at some data on the Old Faithful geyser. Applied Statistics 39, 357-365.",
-  "preparation": "Drop rownames; preserve all 299 measurements and their sequence order.",
-  "limitations": "Some night-time durations were recorded as 2, 3 or 4 minutes from short/medium/long descriptions.",
-  "sha256_original": "691381248e0418ccbfc23cc5093e71220313ddb7ffb70e817e27a6dfb900fbcc"
+  "source": "https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume",
+  "download": "https://archive.ics.uci.edu/static/public/492/metro%2Binterstate%2Btraffic%2Bvolume.zip",
+  "citation": "Hogue, J. (2019). Metro Interstate Traffic Volume. UCI Machine Learning Repository. DOI: 10.24432/C5X60B.",
+  "license": "CC BY 4.0",
+  "preparation": "Validate identical traffic counts at repeated timestamps; retain first weather entry per hour; sort timestamps; select first 1008 hours of longest continuous run; convert Kelvin to Celsius. No interpolation or invented readings.",
+  "limitations": "One road sensor and one six-week window. High volume is not proof of congestion: vehicle speed and road capacity are not included.",
+  "sha256_original": "0b3679ac15173f79c6dc6c5ef8a0798d806fa5c5d7f05c84a5fa711bd1b05f07"
 }
