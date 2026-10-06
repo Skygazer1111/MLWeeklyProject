@@ -1,4 +1,5 @@
 node_modules/
+.venv/
 .sites-runtime/
 .site-archives/
 data/pyodide-check.mjs

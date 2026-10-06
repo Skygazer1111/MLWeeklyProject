@@ -1,5 +1,7 @@
 # ML Weekly Lab
 
+This is the website folder within **MLWeeklyProject**. Start with the [main project README](../README.md) for the complete overview, setup, project structure, deployment, and developer credits. The notes below explain the notebook content in more detail.
+
 Five beginner Python notebooks for the Practice tasks in the 21CSC305P Machine Learning assignment.
 
 ## Open the website
