@@ -10,6 +10,14 @@ Choose a unit and press **Run all**. Each code cell has a **Run cell** button, a
 
 The initial outputs are labeled **Reference run**. They were produced by executing the supplied notebooks. Running the code replaces them with fresh results. **Notebook** downloads the current unit; **All 5 notebooks** downloads all the reference notebooks and their CSV files.
 
+## Deploy on Vercel
+
+This website is static. Python runs in the visitor's browser through Pyodide; Vercel does not need a Python server or a notebook kernel. The Python `requirements.txt` is only for running the downloaded notebooks locally.
+
+Commit and push the deployment configuration before deploying. In Vercel's **Settings > Build and Deployment**, set **Framework Preset** to **Other**. Use the repository root (leave **Root Directory** empty); the root `vercel.json` serves `ml-lab/dist`. If the existing project instead uses **Root Directory** `ml-lab`, the configuration in that folder serves `dist`. Both configurations skip dependency installation and the build step because the complete website is already committed.
+
+Deploy the new commit. Redeploying the old commit will not include the fix. The five unit pages, CSV files, notebooks and ZIP are all in the static output directory. No Python entrypoint is required. When regenerating notebooks, run both scripts below and commit the updated `dist` files before deploying again.
+
 ## Our dataset: Old Faithful geyser
 
 A geyser is a hot spring that sometimes shoots water into the air. This small real dataset records **299 eruptions** in their original observation order. It has only two numeric columns, both in minutes:
