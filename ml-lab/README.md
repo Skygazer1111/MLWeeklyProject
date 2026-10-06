@@ -6,6 +6,8 @@ Five beginner Python notebooks for the Practice tasks in the 21CSC305P Machine L
 
 Double-click **start-lab.cmd**, or run `npm run dev` and open http://127.0.0.1:8000. Node.js is already installed on this computer. You can also use `python -m http.server 8000 --directory dist`.
 
+The home page introduces all five units and previews the actual traffic dataset. Choose **Start learning** or a course card to open a notebook; **Course home** returns to the overview. All pages share the cream grid, yellow controls, rounded panels, and responsive navigation inspired by the supplied HR management design reference.
+
 Choose a unit and press **Run all**. Each code cell has a **Run cell** button, and its output and graphs appear below it. You can edit the code. Run the cells in order because later cells use variables created earlier. The first run needs internet to download Python and its packages; later units reuse the Python worker. **Stop** ends a run. **Reset kernel** clears variables. Changes last until you refresh the page; download your notebook to keep your edits.
 
 The initial outputs are labeled **Reference run**. They were produced by executing the supplied notebooks. Running the code replaces them with fresh results. **Notebook** downloads the current unit; **All 5 notebooks** downloads all the reference notebooks and their CSV files.

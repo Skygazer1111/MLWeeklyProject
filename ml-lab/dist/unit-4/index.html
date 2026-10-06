@@ -1,37 +1,59 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ML Weekly Lab · Python notebooks</title>
-  <meta name="description" content="Run the five units of 21CSC305P Machine Learning as editable Python notebooks, with real results and plots.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M8 22V10h5l3 8 3-8h5v12h-3v-8l-4 8h-2l-4-8v8z' fill='white'/%3E%3C/svg%3E">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fffbea">
+  <title>ML Weekly Lab · Learn by doing</title>
+  <meta name="description" content="Explore five machine learning units with real traffic data, editable Python notebooks, and verified results. Run everything in your browser.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23ffda38'/%3E%3Cpath d='M8 22V10h5l3 8 3-8h5v12h-3v-8l-4 8h-2l-4-8v8z' fill='%231b1b18'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/app.js"></script>
 </head>
 <body>
-  <aside class="sidebar">
-    <a class="brand" href="/unit-1"><span class="brand-mark">M</span><span>ML Weekly Lab<small>21CSC305P · MACHINE LEARNING</small></span></a>
-    <div class="nav-label">COURSE NOTEBOOKS</div>
-    <nav id="unit-nav" aria-label="Course units"></nav>
-    <div class="dataset-card"><div class="small-label">ONE DATASET, FIVE UNITS</div><strong>Highway traffic</strong><p>1,008 consecutive hours.<br>Vehicle count and temperature.</p><div class="dataset-meta">April–May 2017 <span>UCI · I-94 road sensor</span></div><a href="/data/traffic.csv" download>Download traffic CSV</a><a href="https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume" target="_blank" rel="noopener">Dataset source</a></div>
-    <a class="pack-link" href="/ml-weekly-notebooks.zip" download>↓ Download all 5 notebooks</a>
-    <p class="sidebar-note">Python in your browser.<br>No installation needed.</p>
-  </aside>
-  <div class="workspace">
-    <header class="topbar"><span>Course workspace <span class="divider">/</span> <span id="breadcrumb">Unit 1</span></span><span class="python-badge">Python notebook</span></header>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="ML Weekly Lab home"><span class="brand-mark" aria-hidden="true">m<span>l</span></span><span>ML Weekly Lab<span class="brand-dot">.</span></span></a>
+      <div class="header-links"><a href="/" data-home-link>Home</a><a href="/#course">Course units <span aria-hidden="true">⌄</span></a><a href="/#dataset">Our dataset</a></div>
+      <a class="header-download" href="/ml-weekly-notebooks.zip" download><span>Take the lab with you</span><span class="download-pill">Get notebooks <span aria-hidden="true">↗</span></span></a>
+    </header>
     <main id="main">
       <div id="page-loading" role="status">Loading course notebooks…</div>
-      <section id="unit-page" hidden>
-        <div class="unit-kicker" id="unit-kicker"></div><h1 id="unit-title"></h1><p id="unit-summary" class="unit-summary"></p>
-        <div id="practice-list" class="practice-list"></div>
-        <div class="toolbar"><div class="toolbar-actions"><button id="run-all" class="button primary">▶ Run all</button><button id="stop" class="button" hidden>Stop</button><button id="reset" class="button">Reset kernel</button><button id="download" class="button">↓ Notebook</button></div><span id="kernel-status" class="kernel-status" role="status" aria-live="polite">Python ready to start</span></div>
-        <p class="run-help">Edit any code cell, then run it. Run all executes from top to bottom. The first run downloads Python and may take a minute.</p>
-        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-        <div class="notebook-heading"><span>NOTEBOOK</span><span id="output-mode">Reference run · verified outputs</span></div>
-        <div id="cells"></div>
-        <footer class="page-footer"><span>Highway traffic · Hogue (2019) · UCI · CC BY 4.0</span><a href="/ml-weekly-notebooks.zip" download>All 5 notebooks</a><a href="/data/traffic_original.csv.gz" download>Original CSV</a><a id="next-unit" href="/unit-2">Next unit</a></footer>
+      <section id="home-page" hidden aria-labelledby="home-title">
+        <div class="home-hero grid-surface">
+          <div class="hero-badge"><span aria-hidden="true">✦</span> Real data. Real code. Real understanding.</div>
+          <h1 id="home-title">Machine learning,<br>made for <span class="highlight-word">curious minds.</span></h1>
+          <p class="hero-description">A little theory. A lot of discovery. Explore real traffic data,<br class="desktop-break"> build your first models, and see Python come to life.</p>
+          <a class="button primary hero-cta" href="/unit-1">Start learning <span aria-hidden="true">↗</span></a>
+          <p class="hero-note"><span class="status-dot" aria-hidden="true"></span> Runs in your browser. No setup needed.</p>
+          <div class="hero-facts"><span><b>05</b> practical units</span><span><b>1,008</b> real traffic hours</span><span><b>100%</b> editable Python</span></div>
+          <div class="hero-bottom"><span>21CSC305P · MACHINE LEARNING</span><a href="#course">Explore the course <span aria-hidden="true">↓</span></a></div>
+        </div>
+        <section id="course" class="course-section" aria-labelledby="course-title">
+          <div class="section-heading"><div><p class="eyebrow">YOUR LEARNING PATH</p><h2 id="course-title">Small steps. Big discoveries.</h2></div><p>One dataset connects it all. <br>Pick a unit and make it your own.</p></div>
+          <div id="course-cards" class="course-cards"></div>
+        </section>
+        <section id="dataset" class="dataset-section" aria-labelledby="dataset-title">
+          <div class="dataset-copy"><p class="eyebrow">MEET YOUR DATASET</p><h2 id="dataset-title">Real roads. <br>Real possibilities.</h2><p>Follow 42 days of hourly readings from an I-94 highway sensor. Explore how vehicle counts and temperature change, then use the patterns to build your models.</p><div class="dataset-actions"><a class="button dark" href="/data/traffic.csv" download>Download traffic CSV <span aria-hidden="true">↓</span></a><a class="text-link" href="https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume" target="_blank" rel="noopener">View UCI source ↗</a></div></div>
+          <div class="dataset-preview"><div class="preview-heading"><span class="file-icon" aria-hidden="true">▤</span><span>traffic.csv<small>A glimpse of the first few hours</small></span><span class="preview-badge">REAL DATA</span></div><div class="table-wrap"><table><caption class="sr-only">First three observations from the highway traffic dataset</caption><thead><tr><th scope="col">date_time</th><th scope="col">traffic_volume</th><th scope="col">temperature_c</th></tr></thead><tbody id="dataset-preview-rows"></tbody></table></div><div class="preview-footer"><span><span class="status-dot" aria-hidden="true"></span> 1,008 observations · 3 columns</span><span>Apr–May 2017</span></div></div>
+        </section>
+      </section>
+      <section id="unit-page" hidden aria-labelledby="unit-title">
+        <div class="course-navigation"><a class="back-home" href="/">← Course home</a><nav id="unit-nav" aria-label="Course units"></nav></div>
+        <div class="unit-hero grid-surface"><div class="hero-badge"><span aria-hidden="true">✦</span><span id="unit-kicker"></span></div><h1 id="unit-title"></h1><p id="unit-summary" class="unit-summary"></p><div id="practice-list" class="practice-list"></div></div>
+        <div class="notebook-workspace">
+          <div class="workspace-heading"><div><p class="eyebrow"><span id="breadcrumb">Unit 1</span> / YOUR WORKSPACE</p><h2>Let’s put it into practice.</h2></div><span class="python-badge"><span class="status-dot" aria-hidden="true"></span> Python in your browser</span></div>
+          <div class="toolbar"><div class="toolbar-actions"><button id="run-all" class="button primary">▶ Run all</button><button id="stop" class="button stop-button" hidden>Stop</button><button id="reset" class="button">Reset kernel</button><button id="download" class="button">↓ Notebook</button></div><span id="kernel-status" class="kernel-status" role="status" aria-live="polite">Python ready to start</span></div>
+          <p class="run-help">Edit a cell and run it, or use Run all to execute top to bottom. The first run downloads Python and may take a minute. <span>Tip: Shift + Enter runs a cell.</span></p>
+          <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+          <div class="notebook-heading"><span>YOUR NOTEBOOK</span><span id="output-mode">Reference run · verified outputs</span></div>
+          <div id="cells"></div>
+          <div class="unit-end"><div><span class="eyebrow">KEEP THE CURIOSITY GOING</span><h2>Ready for the next discovery?</h2></div><a id="next-unit" class="button primary" href="/unit-2">Next unit ↗</a></div>
+        </div>
       </section>
     </main>
+    <footer class="site-footer"><a class="footer-brand" href="/">ML Weekly Lab<span class="brand-dot">.</span></a><span>Built for learning, one experiment at a time.</span><div><a href="/ml-weekly-notebooks.zip" download>All 5 notebooks ↗</a><a href="/data/traffic_original.csv.gz" download>Original dataset ↗</a></div><p>21CSC305P · Highway traffic data: Hogue (2019), UCI · CC BY 4.0</p></footer>
   </div>
 </body>
 </html>

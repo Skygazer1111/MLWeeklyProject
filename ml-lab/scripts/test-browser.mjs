@@ -10,6 +10,27 @@ const page=await browser.newPage({viewport:{width:1440,height:1000}});
 const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error('PAGE ERROR',e.message);});
 const results=[];await fs.mkdir(path.join(root,'test-results'),{recursive:true});
 try{
+  await page.goto('http://127.0.0.1:8000/');
+  await page.locator('#home-page').waitFor({state:'visible'});
+  assert.equal(await page.locator('.course-card').count(),5);
+  await page.waitForFunction(()=>document.querySelectorAll('#dataset-preview-rows tr').length===3);
+  await page.screenshot({path:path.join(root,'test-results/home-desktop.png'),fullPage:true});
+  await page.locator('.hero-cta').click();
+  await page.locator('#unit-page').waitFor({state:'visible'});
+  assert.equal(await page.locator('#breadcrumb').textContent(),'Unit 1');
+  await page.locator('.back-home').click();
+  await page.locator('#home-page').waitFor({state:'visible'});
+  await page.locator('.course-card[href="/unit-3"]').click();
+  await page.waitForFunction(()=>!document.querySelector('#unit-page').hidden && document.querySelector('#breadcrumb').textContent==='Unit 3');
+  await page.locator('.header-links a[href="/#dataset"]').click();
+  await page.locator('#home-page').waitFor({state:'visible'});
+  assert.equal(new URL(page.url()).hash,'#dataset');
+  assert(await page.locator('#dataset').evaluate(el=>{const rect=el.getBoundingClientRect();return rect.top>=0 && rect.bottom<=innerHeight;}));
+  await page.goBack();
+  await page.waitForFunction(()=>!document.querySelector('#unit-page').hidden && document.querySelector('#breadcrumb').textContent==='Unit 3');
+  await page.goForward();
+  await page.locator('#home-page').waitFor({state:'visible'});
+  results.push({home:'passed',courseCards:'passed',datasetPreview:'passed',homeNavigation:'passed',history:'passed'});
   await page.goto('http://127.0.0.1:8000/unit-1');
   await page.locator('#unit-page').waitFor({state:'visible'});
   assert.equal(await page.locator('nav a').count(),5);
@@ -59,6 +80,15 @@ try{
     assert.equal(await page.locator('#breadcrumb').textContent(),`Unit ${number}`);
   }
   const pack=await page.request.get('http://127.0.0.1:8000/ml-weekly-notebooks.zip');assert(pack.ok());assert((await pack.body()).length>100000);
+  for(const width of [320,390,768,1024,1440]){
+    await page.setViewportSize({width,height:900});
+    for(const route of ['/','/unit-3']){
+      await page.goto(`http://127.0.0.1:8000${route}`);
+      await page.locator(route==='/'?'#home-page':'#unit-page').waitFor({state:'visible'});
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${route} overflow at ${width}px`);
+      if(width===390) await page.screenshot({path:path.join(root,route==='/'?'test-results/home-mobile.png':'test-results/unit-mobile.png'),fullPage:false});
+    }
+  }
   assert.deepEqual(errors,[]);
   results.push({editing:'passed',errorRecovery:'passed',download:'passed',stop:'passed',mobile:'passed',deepLinks:'passed',webmcp:'Supported browser context unavailable; optional registration feature-detected'});
   await fs.writeFile(path.join(root,'browser-verification.json'),JSON.stringify(results,null,2));

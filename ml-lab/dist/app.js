@@ -1,8 +1,44 @@
 const $ = selector => document.querySelector(selector);
 const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
 const asText = value => Array.isArray(value) ? value.join('') : value || '';
-let units = [], unit, notebook, busy = false, worker, kernelUnit, nextId = 0;
+let units = [], unit, notebook, busy = false, worker, kernelUnit, nextId = 0, pageToken = 0;
 const notebooks = new Map(), pending = new Map();
+const unitIcons = [
+  '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/>',
+  '<path d="M4 4v16h16M7 16l5-6 4 2 4-7"/>',
+  '<circle cx="7" cy="7" r="2"/><circle cx="16" cy="8" r="2"/><circle cx="10" cy="16" r="2"/><circle cx="19" cy="17" r="1"/><path d="m9 8 5 0m-6 1 2 5m4-4-3 4"/>',
+  '<circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M8 10c3-5 5-5 8 0m0 4c-3 5-5 5-8 0"/>',
+  '<rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v5M5 17v-5h14v5"/>'
+];
+function renderCourseCards() {
+  $('#course-cards').innerHTML = units.map(u => `<a class="course-card" href="/unit-${u.number}" aria-label="Open Unit ${u.number}: ${escapeHtml(u.title)}"><div class="card-top"><span class="course-number">UNIT ${String(u.number).padStart(2,'0')}</span><span class="course-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${unitIcons[u.number-1]}</svg></span></div><h3>${escapeHtml(u.title)}</h3><p>${escapeHtml(u.summary)}</p><div class="card-bottom"><span>${u.practices.length} practice ${u.practices.length===1?'task':'tasks'} · Interactive notebook</span><span class="card-arrow" aria-hidden="true">↗</span></div></a>`).join('');
+}
+async function loadDatasetPreview() {
+  try {
+    const response = await fetch('/data/traffic.csv');
+    if (!response.ok) throw new Error('Dataset unavailable');
+    const rows = (await response.text()).trim().split(/\r?\n/).slice(1,4);
+    $('#dataset-preview-rows').innerHTML = rows.map(row=>`<tr>${row.split(',').map((value,i)=>`<td>${escapeHtml(i===2?Number(value).toFixed(2):value)}</td>`).join('')}</tr>`).join('');
+  } catch {
+    $('#dataset-preview-rows').innerHTML = '<tr><td colspan="3">Preview unavailable. Download the CSV to explore the data.</td></tr>';
+  }
+}
+function showHome({navigate=false, hash=''}={}) {
+  ++pageToken;
+  if (busy) stop('Run stopped because you returned to the course home.');
+  if (navigate) history.pushState({},'',`/${hash}`);
+  $('#unit-page').hidden = true;
+  $('#page-loading').hidden = true;
+  $('#home-page').hidden = false;
+  $('[data-home-link]').setAttribute('aria-current','page');
+  document.title = 'ML Weekly Lab · Learn by doing';
+  if (hash) document.getElementById(hash.slice(1))?.scrollIntoView({behavior:'instant',block:'start'});
+  else if (navigate) window.scrollTo(0,0);
+}
+function loadCurrentPage() {
+  const number = Number(location.pathname.match(/unit-(\d)/)?.[1]);
+  return number ? loadUnit(number) : showHome({hash:location.hash});
+}
 function inline(text) {
   return escapeHtml(text).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -93,16 +129,19 @@ function renderNotebook() {
   });
 }
 async function loadUnit(number, {navigate=false}={}) {
+  const token = ++pageToken;
   if (busy) stop('Run stopped because you changed units.');
   const selected=units.find(u=>u.number===number) || units[0];
   if(navigate) history.pushState({},'',`/unit-${selected.number}`);
-  $('#unit-page').hidden=true; $('#page-loading').hidden=false;
+  $('#home-page').hidden=true; $('#unit-page').hidden=true; $('#page-loading').hidden=false;
+  $('[data-home-link]').removeAttribute('aria-current');
   try {
     if (!notebooks.has(selected.number)) {
       const response=await fetch(`/notebooks/${selected.filename}`);
       if(!response.ok) throw new Error('The notebook could not be loaded.');
       notebooks.set(selected.number,await response.json());
     }
+    if (token !== pageToken) return;
     unit=selected; notebook=notebooks.get(unit.number);
     if(kernelUnit!==unit.number) kernelUnit=null;
     document.title=`Unit ${unit.number} · ${unit.title} | ML Weekly Lab`;
@@ -115,7 +154,7 @@ async function loadUnit(number, {navigate=false}={}) {
     $('#next-unit').href=`/unit-${unit.number===5?1:unit.number+1}`; $('#next-unit').textContent=unit.number===5?'Back to Unit 1':'Next unit';
     renderNotebook(); setStatus(worker?'Python ready':'Python ready to start');
     $('#page-loading').hidden=true; $('#unit-page').hidden=false;
-  } catch(error) {$('#page-loading').textContent=`${error.message} Reload the page to retry.`;}
+  } catch(error) {if (token === pageToken) $('#page-loading').textContent=`${error.message} Reload the page to retry.`;}
 }
 function setStatus(text, type='') {$('#kernel-status').textContent=text;$('#kernel-status').className=`kernel-status ${type}`;}
 function notice(text,error=false) {$('#notice').hidden=false;$('#notice').textContent=text;$('#notice').className=`notice ${error?'error':''}`;}
@@ -183,12 +222,18 @@ $('#download').addEventListener('click',()=>{
   const a=document.createElement('a');a.href=url;a.download=unit.filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 document.addEventListener('click',event=>{
-  const link=event.target.closest('a');const match=link?.getAttribute('href')?.match(/^\/unit-([1-5])$/);
-  if(match && !event.ctrlKey && !event.metaKey){event.preventDefault();loadUnit(Number(match[1]),{navigate:true});window.scrollTo(0,0);}
+  if(event.defaultPrevented || event.button!==0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  const link=event.target.closest('a');
+  if (!link || link.hasAttribute('download') || link.target === '_blank') return;
+  const href=link.getAttribute('href'), match=href?.match(/^\/unit-([1-5])$/);
+  if(match){event.preventDefault();loadUnit(Number(match[1]),{navigate:true});window.scrollTo(0,0);}
+  else if(href==='/' || href==='/#course' || href==='/#dataset'){
+    event.preventDefault();showHome({navigate:true,hash:href.slice(1)});
+  }
 });
-window.addEventListener('popstate',()=>loadUnit(Number(location.pathname.match(/unit-(\d)/)?.[1]||1)));
+window.addEventListener('popstate',loadCurrentPage);
 async function start(){
-  try{const response=await fetch('/units.json');if(!response.ok)throw new Error('Course files unavailable');units=await response.json();await loadUnit(Number(location.pathname.match(/unit-(\d)/)?.[1]||1));}
+  try{const response=await fetch('/units.json');if(!response.ok)throw new Error('Course files unavailable');units=await response.json();renderCourseCards();loadDatasetPreview();await loadCurrentPage();}
   catch(error){$('#page-loading').textContent=`${error.message}. Reload to retry.`;}
 }
 await start();

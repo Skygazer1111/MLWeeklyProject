@@ -1,5 +1,12 @@
 [
   {
+    "home": "passed",
+    "courseCards": "passed",
+    "datasetPreview": "passed",
+    "homeNavigation": "passed",
+    "history": "passed"
+  },
+  {
     "unit": 1,
     "graphs": 2,
     "tables": 2,
