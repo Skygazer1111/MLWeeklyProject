@@ -1,0 +1,41 @@
+[
+  {
+    "unit": 1,
+    "graphs": 2,
+    "tables": 2,
+    "result": "passed"
+  },
+  {
+    "unit": 2,
+    "graphs": 3,
+    "tables": 2,
+    "result": "passed"
+  },
+  {
+    "unit": 3,
+    "graphs": 2,
+    "tables": 1,
+    "result": "passed"
+  },
+  {
+    "unit": 4,
+    "graphs": 2,
+    "tables": 3,
+    "result": "passed"
+  },
+  {
+    "unit": 5,
+    "graphs": 2,
+    "tables": 2,
+    "result": "passed"
+  },
+  {
+    "editing": "passed",
+    "errorRecovery": "passed",
+    "download": "passed",
+    "stop": "passed",
+    "mobile": "passed",
+    "deepLinks": "passed",
+    "webmcp": "Supported browser context unavailable; optional registration feature-detected"
+  }
+]

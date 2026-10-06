@@ -1,0 +1,16 @@
+{
+  "name": "ml-lab",
+  "version": "1.0.0",
+  "description": "Five runnable Python course notebooks with browser execution",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "test": "node scripts/test-browser.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Old Faithful geyser (MASS version)",
+  "rows": 299,
+  "columns": {
+    "duration": "Eruption duration in minutes",
+    "waiting": "Waiting time BEFORE this eruption, in minutes"
+  },
+  "collection": "Continuous observations, August 1-15, 1985",
+  "source": "https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/geyser.html",
+  "csv_source": "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/MASS/geyser.csv",
+  "citation": "Azzalini, A. and Bowman, A. W. (1990). A look at some data on the Old Faithful geyser. Applied Statistics 39, 357-365.",
+  "preparation": "Drop rownames; preserve all 299 measurements and their sequence order.",
+  "limitations": "Some night-time durations were recorded as 2, 3 or 4 minutes from short/medium/long descriptions.",
+  "sha256_original": "691381248e0418ccbfc23cc5093e71220313ddb7ffb70e817e27a6dfb900fbcc"
+}

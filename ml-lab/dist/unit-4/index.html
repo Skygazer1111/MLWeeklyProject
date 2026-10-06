@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ML Weekly Lab · Python notebooks</title>
+  <meta name="description" content="Run the five units of 21CSC305P Machine Learning as editable Python notebooks, with real results and plots.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M8 22V10h5l3 8 3-8h5v12h-3v-8l-4 8h-2l-4-8v8z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/unit-1"><span class="brand-mark">M</span><span>ML Weekly Lab<small>21CSC305P · MACHINE LEARNING</small></span></a>
+    <div class="nav-label">COURSE NOTEBOOKS</div>
+    <nav id="unit-nav" aria-label="Course units"></nav>
+    <div class="dataset-card"><div class="small-label">ONE DATASET, FIVE UNITS</div><strong>Old Faithful geyser</strong><p>299 eruptions. Two columns.<br>All measurements in minutes.</p><div class="dataset-meta">August 1985 <span>R · MASS dataset</span></div><a href="/data/geyser.csv" download>Download geyser CSV</a><a href="https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/geyser.html" target="_blank" rel="noopener">Dataset source</a></div>
+    <a class="pack-link" href="/ml-weekly-notebooks.zip" download>↓ Download all 5 notebooks</a>
+    <p class="sidebar-note">Python in your browser.<br>No installation needed.</p>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>Course workspace <span class="divider">/</span> <span id="breadcrumb">Unit 1</span></span><span class="python-badge">Python notebook</span></header>
+    <main id="main">
+      <div id="page-loading" role="status">Loading course notebooks…</div>
+      <section id="unit-page" hidden>
+        <div class="unit-kicker" id="unit-kicker"></div><h1 id="unit-title"></h1><p id="unit-summary" class="unit-summary"></p>
+        <div id="practice-list" class="practice-list"></div>
+        <div class="toolbar"><div class="toolbar-actions"><button id="run-all" class="button primary">▶ Run all</button><button id="stop" class="button" hidden>Stop</button><button id="reset" class="button">Reset kernel</button><button id="download" class="button">↓ Notebook</button></div><span id="kernel-status" class="kernel-status" role="status" aria-live="polite">Python ready to start</span></div>
+        <p class="run-help">Edit any code cell, then run it. Run all executes from top to bottom. The first run downloads Python and may take a minute.</p>
+        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+        <div class="notebook-heading"><span>NOTEBOOK</span><span id="output-mode">Reference run · verified outputs</span></div>
+        <div id="cells"></div>
+        <footer class="page-footer"><span>Old Faithful geyser · Azzalini & Bowman (1990) · R MASS</span><a href="/ml-weekly-notebooks.zip" download>All 5 notebooks</a><a href="/data/geyser_original.csv" download>Original CSV</a><a id="next-unit" href="/unit-2">Next unit</a></footer>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

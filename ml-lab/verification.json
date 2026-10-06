@@ -1,0 +1,32 @@
+[
+  {
+    "notebook": "unit_1_introduction.ipynb",
+    "code_cells": 4,
+    "graphs": 2,
+    "errors": 0
+  },
+  {
+    "notebook": "unit_2_linear_models.ipynb",
+    "code_cells": 7,
+    "graphs": 3,
+    "errors": 0
+  },
+  {
+    "notebook": "unit_3_clustering_pca.ipynb",
+    "code_cells": 4,
+    "graphs": 2,
+    "errors": 0
+  },
+  {
+    "notebook": "unit_4_hidden_markov_models.ipynb",
+    "code_cells": 4,
+    "graphs": 2,
+    "errors": 0
+  },
+  {
+    "notebook": "unit_5_combining_models.ipynb",
+    "code_cells": 5,
+    "graphs": 2,
+    "errors": 0
+  }
+]

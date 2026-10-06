@@ -1,0 +1,6 @@
+node_modules/
+.sites-runtime/
+.site-archives/
+data/pyodide-check.mjs
+test-results/
+__pycache__/
