@@ -31,6 +31,11 @@ The teaching version has **1,008 continuous hourly observations (42 days)**: 13 
 - `date_time`: the recorded hour.
 - `traffic_volume`: vehicles counted during that hour.
 - `temperature_c`: air temperature in degrees Celsius.
+- `hour`, `weekday`, `is_weekend`: the clock and weekend flag, derived from `date_time`.
+- `weather_main`: weather category from the first source row at that timestamp.
+- `clouds_pct`: cloud-cover percentage from that same row.
+
+`rain_1h`, `snow_1h`, and `holiday` are empty throughout this window, so they are omitted.
 
 Multiple weather entries can refer to the same hour. We verify that their vehicle counts agree, keep the first entry per timestamp, and sort by time. We select the first six weeks of the longest uninterrupted hourly run before modelling. Temperature is converted from Kelvin by subtracting 273.15. We do not fill missing hours or invent measurements. The complete original compressed CSV is `data/traffic_original.csv.gz`; the small classroom CSV is `data/traffic.csv`. `data/metadata.json` records provenance, selection, units, and the original file hash.
 
@@ -41,7 +46,7 @@ Multiple weather entries can refer to the same hour. We verify that their vehicl
 1. **Introduction:** read the CSV, inspect rows and missing values, summarize vehicle count and temperature, draw a histogram and scatter plot.
 2. **Linear models:** predict the following hour's vehicle count with linear regression; classify the next hour as light/heavy using Bayesian logistic regression and linear SVM. `next_volume = traffic_volume.shift(-1)` creates 1,007 complete pairs. The first 805 pairs train the models and the final 202 test them. Heavy means at least 4,000 vehicles/hour, a preselected classroom cutoff. Only current vehicle count is the input. The Bayesian model uses an intercept/slope grid, Gaussian prior, training likelihood, and posterior predictive averaging.
 3. **Clustering and PCA:** K-means, Gaussian mixtures, and Ward agglomerative clustering explore two groups using the same hour's vehicle count and temperature. Standardize both features; inspect cluster means before naming groups. PCA compresses those two features to one. The saved run retains **60.31% of standardized variance**, not 60.31% accuracy. Keeping two components retains all variance but does not reduce dimension.
-4. **HMM:** a supervised two-state teaching HMM uses daytime/night-time regime labels from training timestamps (daytime: 06:00–19:59) and light/heavy traffic observations. The first 806 hours train the probability tables and the final 202 are tested. During test filtering, clock-based state labels are withheld and predictions use only previously observed traffic categories. Predictions are recorded before revealing the current category. Add-one smoothing avoids zero probabilities. A practical model would use its available clock; this example illustrates HMM filtering without Baum-Welch or Viterbi. It includes a previous-hour-category baseline, which scores better than the HMM in the saved run.
+4. **HMM:** traffic counts become three levels, Low / Medium / High, using tertiles fit on the training hours only. A supervised HMM labels training regimes from the clock: Night (before 06:00 or from 21:00), Rush (07:00–09:00 and 16:00–18:00), and Off-peak, then estimates transitions and emissions by counting. Baum–Welch learns three hidden states without the clock. Forward–backward, scaling, the sum-product check, and Viterbi are drawn on the held-out week. A Kalman filter tracks the continuous count around the training hour-of-week profile. Next-hour forecasts are scored against the previous hour and the majority level. The pictures are the presentation: each syllabus step has a graph and a sentence to say.
 5. **Combining models:** a depth-two CART tree, 20-tree random forest, and 20-estimator AdaBoost classify the same next-hour target and use the same chronological split as Unit 2.
 
 Each notebook has commented code, real executed outputs, graphs, changes to try, and viva questions. Run cells in order and explain the input, algorithm, and output.

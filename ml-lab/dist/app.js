@@ -17,10 +17,18 @@ async function loadDatasetPreview() {
   try {
     const response = await fetch('/data/traffic.csv');
     if (!response.ok) throw new Error('Dataset unavailable');
-    const rows = (await response.text()).trim().split(/\r?\n/).slice(1,4);
-    $('#dataset-preview-rows').innerHTML = rows.map(row=>`<tr>${row.split(',').map((value,i)=>`<td>${escapeHtml(i===2?Number(value).toFixed(2):value)}</td>`).join('')}</tr>`).join('');
+    const lines = (await response.text()).trim().split(/\r?\n/);
+    const header = lines[0].split(',');
+    const wanted = ['date_time', 'traffic_volume', 'temperature_c', 'weather_main'];
+    const index = wanted.map(name => header.indexOf(name));
+    if (index.some(i => i < 0)) throw new Error('Dataset columns unavailable');
+    const temperature = header.indexOf('temperature_c');
+    $('#dataset-preview-rows').innerHTML = lines.slice(1, 4).map(row => {
+      const cells = row.split(',');
+      return `<tr>${index.map(i => `<td>${escapeHtml(i === temperature ? Number(cells[i]).toFixed(2) : cells[i])}</td>`).join('')}</tr>`;
+    }).join('');
   } catch {
-    $('#dataset-preview-rows').innerHTML = '<tr><td colspan="3">Preview unavailable. Download the CSV to explore the data.</td></tr>';
+    $('#dataset-preview-rows').innerHTML = '<tr><td colspan="4">Preview unavailable. Download the CSV to explore the data.</td></tr>';
   }
 }
 function showHome({navigate=false, hash=''}={}) {

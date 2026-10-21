@@ -16,8 +16,9 @@ for path in sorted((root / 'notebooks').glob('*.ipynb')):
     shutil.copy(path, root / 'dist' / 'notebooks' / path.name)
     images = sum('image/png' in out.get('data', {}) for c in nb.cells for out in c.get('outputs', []))
     errors = [out for c in nb.cells for out in c.get('outputs', []) if out.output_type == 'error']
-    assert images >= 2 and not errors
     row = {'notebook': path.name, 'code_cells': sum(c.cell_type=='code' for c in nb.cells), 'graphs': images, 'errors': len(errors)}
+    minimum = 15 if path.name.startswith('unit_4') else 2
+    assert images >= minimum and not errors, row
     report.append(row)
     print(json.dumps(row), flush=True)
 with zipfile.ZipFile(root / 'dist' / 'ml-weekly-notebooks.zip', 'w', zipfile.ZIP_DEFLATED) as archive:

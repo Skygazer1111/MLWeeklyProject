@@ -40,7 +40,7 @@ Built by **[Priyan](https://portfolio-priyan.vercel.app/)**.
 1. **Introduction** — Import the CSV, inspect rows and missing values, calculate summary statistics, and plot vehicle count and temperature.
 2. **Linear models** — Predict the next hour's traffic volume with linear regression and classify light/heavy traffic with Bayesian logistic regression and a linear SVM.
 3. **Clustering & PCA** — Explore K-means, Gaussian mixtures, and hierarchical clustering, then reduce standardized features with principal component analysis.
-4. **Hidden Markov models** — Use a supervised two-state teaching HMM to explore sequential traffic prediction and compare it with a previous-hour baseline.
+4. **Hidden Markov models** — Follow one traffic sequence through a Markov chain, a three-regime HMM, forward–backward, sum-product, scaling, Viterbi, and a Kalman filter.
 5. **Combining models** — Compare CART, random forest, and AdaBoost classifiers using the same next-hour target and chronological split as Unit 2.
 
 The notebooks include commented code, executed results, graphs, experiments to try, and viva questions. Detailed modelling assumptions and notebook explanations are in [the lab documentation](ml-lab/README.md#what-each-notebook-teaches).
@@ -114,8 +114,13 @@ The teaching CSV contains:
 - `date_time` — The observation timestamp.
 - `traffic_volume` — Vehicles counted during that hour.
 - `temperature_c` — Air temperature in degrees Celsius.
+- `hour` — Hour of day, taken from the timestamp.
+- `weekday` — Weekday name, taken from the timestamp.
+- `is_weekend` — 1 on Saturday and Sunday, otherwise 0.
+- `weather_main` — Weather category from the first source row in that hour.
+- `clouds_pct` — Cloud-cover percentage from that same row.
 
-Preparation validates vehicle counts at repeated timestamps, keeps the first weather entry for each hour, sorts the observations, selects a continuous six-week window, and converts Kelvin to Celsius. Missing hours are not interpolated and measurements are not invented.
+`rain_1h`, `snow_1h`, and `holiday` are present in the original file but are zero or empty in this window, so they are not teaching columns. Preparation validates vehicle counts at repeated timestamps, keeps the first weather entry for each hour, sorts the observations, selects a continuous six-week window, converts Kelvin to Celsius, and derives the clock columns. Missing hours are not interpolated and measurements are not invented.
 
 Files:
 
@@ -123,7 +128,7 @@ Files:
 - [traffic_original.csv.gz](ml-lab/data/traffic_original.csv.gz) — Original compressed source CSV.
 - [metadata.json](ml-lab/data/metadata.json) — Provenance, selection rules, units, source hash, and limitations.
 
-The dataset represents one sensor and one short time window. High vehicle counts alone do not establish congestion, and model scores do not establish performance across roads or seasons. The HMM is a teaching example; its supplied reference run includes a simpler baseline that performs better.
+The dataset represents one sensor and one short time window. High vehicle counts alone do not establish congestion, and model scores do not establish performance across roads or seasons. The HMM notebook is a visual teaching sequence. It prints next-hour accuracy beside a previous-hour baseline, and that baseline can be the stronger score.
 
 **Citation:** Hogue, J. (2019). *Metro Interstate Traffic Volume*. UCI Machine Learning Repository. DOI: [10.24432/C5X60B](https://doi.org/10.24432/C5X60B). Dataset license: **CC BY 4.0**.
 

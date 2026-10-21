@@ -32,7 +32,7 @@
   {
     "number": 4,
     "title": "Hidden Markov models",
-    "summary": "Use a two-state HMM to predict whether the next observed traffic hour is busy.",
+    "summary": "Follow one traffic sequence through Markov chains, hidden regimes, forward\u2013backward, Viterbi, and a Kalman filter.",
     "practices": [
       "Implement HMM to predict the sequential data."
     ],

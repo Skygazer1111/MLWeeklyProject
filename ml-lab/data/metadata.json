@@ -8,13 +8,19 @@
   "columns": {
     "date_time": "Source local CST timestamp",
     "traffic_volume": "Vehicles counted during this hour",
-    "temperature_c": "Air temperature in degrees Celsius"
+    "temperature_c": "Air temperature in degrees Celsius",
+    "hour": "Hour of day, 0\u201323, derived from date_time",
+    "weekday": "Weekday name derived from date_time",
+    "is_weekend": "1 for Saturday and Sunday, otherwise 0",
+    "weather_main": "Weather category from the first source row at this timestamp",
+    "clouds_pct": "Cloud cover percentage from the first source row at this timestamp"
   },
+  "omitted_in_this_window": "rain_1h, snow_1h, and holiday are in the original file but are all zero or empty in these 1,008 hours, so they are not teaching columns.",
   "source": "https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume",
   "download": "https://archive.ics.uci.edu/static/public/492/metro%2Binterstate%2Btraffic%2Bvolume.zip",
   "citation": "Hogue, J. (2019). Metro Interstate Traffic Volume. UCI Machine Learning Repository. DOI: 10.24432/C5X60B.",
   "license": "CC BY 4.0",
-  "preparation": "Validate identical traffic counts at repeated timestamps; retain first weather entry per hour; sort timestamps; select first 1008 hours of longest continuous run; convert Kelvin to Celsius. No interpolation or invented readings.",
-  "limitations": "One road sensor and one six-week window. High volume is not proof of congestion: vehicle speed and road capacity are not included.",
+  "preparation": "Validate identical traffic counts at repeated timestamps; retain first weather entry per hour; sort timestamps; select first 1008 hours of longest continuous run; convert Kelvin to Celsius; derive hour, weekday, and weekend from the timestamp. No interpolation or invented readings.",
+  "limitations": "One road sensor and one six-week window. High volume is not proof of congestion: vehicle speed and road capacity are not included. Weather is the first reported category when several descriptions share an hour.",
   "sha256_original": "0b3679ac15173f79c6dc6c5ef8a0798d806fa5c5d7f05c84a5fa711bd1b05f07"
 }
