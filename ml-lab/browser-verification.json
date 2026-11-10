@@ -32,8 +32,8 @@
   },
   {
     "unit": 5,
-    "graphs": 2,
-    "tables": 2,
+    "graphs": 16,
+    "tables": 5,
     "result": "passed"
   },
   {

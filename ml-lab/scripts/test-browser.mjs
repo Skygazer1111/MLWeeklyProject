@@ -44,7 +44,7 @@ try{
     if(mode!=='Your session · execution complete')console.error('PYTHON FAILURE',await page.locator('.error-output').allTextContents());
     assert.equal(mode,'Your session · execution complete',`Unit ${number} failed: ${notice}`);
     assert.equal(await page.locator('.error-output').count(),0);
-    const graphs=await page.locator('.output img').count();assert(graphs>=(number===4?15:2),`Unit ${number} missing graphs`);
+    const graphs=await page.locator('.output img').count();assert(graphs>=(number===4||number===5?15:2),`Unit ${number} missing graphs`);
     const tables=await page.locator('.output table').count();assert(tables>=1);
     results.push({unit:number,graphs,tables,result:'passed'});console.log(JSON.stringify(results.at(-1)));
   }

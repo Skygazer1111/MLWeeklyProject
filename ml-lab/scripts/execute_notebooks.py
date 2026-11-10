@@ -17,7 +17,7 @@ for path in sorted((root / 'notebooks').glob('*.ipynb')):
     images = sum('image/png' in out.get('data', {}) for c in nb.cells for out in c.get('outputs', []))
     errors = [out for c in nb.cells for out in c.get('outputs', []) if out.output_type == 'error']
     row = {'notebook': path.name, 'code_cells': sum(c.cell_type=='code' for c in nb.cells), 'graphs': images, 'errors': len(errors)}
-    minimum = 15 if path.name.startswith('unit_4') else 2
+    minimum = 15 if path.name.startswith(('unit_4', 'unit_5')) else 2
     assert images >= minimum and not errors, row
     report.append(row)
     print(json.dumps(row), flush=True)

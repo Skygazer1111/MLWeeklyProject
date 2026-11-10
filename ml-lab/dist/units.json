@@ -41,7 +41,7 @@
   {
     "number": 5,
     "title": "Combining models",
-    "summary": "Compare a small decision tree with random forest and AdaBoost classifiers.",
+    "summary": "Learn one tree (CART), see how trees become adaptive basis functions, build a generalized additive model, boost and ensemble models, average over models with Bayes, then compare everything on the same held-out hours.",
     "practices": [
       "Implement CART learning algorithms to perform categorization.",
       "Implement Ensemble learning models to perform classification."

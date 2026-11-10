@@ -41,7 +41,7 @@ Built by **[Priyan](https://portfolio-priyan.vercel.app/)**.
 2. **Linear models** — Predict the next hour's traffic volume with linear regression and classify light/heavy traffic with Bayesian logistic regression and a linear SVM.
 3. **Clustering & PCA** — Explore K-means, Gaussian mixtures, and hierarchical clustering, then reduce standardized features with principal component analysis.
 4. **Hidden Markov models** — Follow one traffic sequence through a Markov chain, a three-regime HMM, forward–backward, sum-product, scaling, Viterbi, and a Kalman filter.
-5. **Combining models** — Compare CART, random forest, and AdaBoost classifiers using the same next-hour target and chronological split as Unit 2.
+5. **Combining models** — CART, adaptive basis function models, a generalized additive model, boosting, ensembles (bagging, random forest, voting, stacking), and Bayesian model averaging, all compared on the same next-hour target and final test hours as Unit 2 against majority-class and persistence baselines.
 
 The notebooks include commented code, executed results, graphs, experiments to try, and viva questions. Detailed modelling assumptions and notebook explanations are in [the lab documentation](ml-lab/README.md#what-each-notebook-teaches).
 
